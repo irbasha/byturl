@@ -1,7 +1,72 @@
 {% extends "base.html" %}
 
 {% block body %}
-    <div class="row" >
-        <h4>Welcome to BytURL</h4>
-    </div>
+<style>
+    .intro{
+        width: 100%;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .form-class {
+        padding: auto;
+        margin-left: 100px;
+        margin-right: 100px;
+        padding-top: 10px;
+    }
+    .output-class {
+        padding: auto;
+        margin-left: 150px;
+        margin-right: 150px;
+        padding-top: 20px;
+    }
+
+</style>
+
+<div class="intro">
+    <p><h1>Want to Shorten your URL?</h1></p>
+    <p>With BytURL you can make your url look teeny weeny...</p>
+</div>
+<div class="form-class">
+	<form class='create-form' action='/createurl/' method='get'>
+		<div class="input-group input-group-lg">
+			<input type="text" name="url" class="form-control" placeholder="Enter URL"
+				aria-label="Recipient's username" aria-describedby="button-addon2">
+			<div class="input-group-append">
+				<button class="btn btn-primary" type="submit" id="button-addon2">Shorten URL</button>
+			</div>
+		</div>
+	</form>
+</div>
+{% if shortened_url %}
+
+<div class="output-class">
+	<textarea rows="2" class="form-control" style="background: transparent;" readonly>{{ shortened_url }}</textarea>
+	<p>
+		<a class="copyurl" href="{{ shortened_url }}"><small>[copy to clipboard]</small></a>
+		<a class="openurl" href="{{ shortened_url }}"> <small>[Open in New Tab]</small></a>
+	</p>
+</div>
+
+{% endif %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(".copyurl").click(function (e) {
+		e.preventDefault();
+		var copyText = $(this).attr('href');
+
+		document.addEventListener('copy', function (e) {
+			e.clipboardData.setData('text/plain', copyText);
+			e.preventDefault();
+		}, true);
+
+		document.execCommand('copy');
+		console.log('copied text : ', copyText);
+	})
+	$(".openurl").click(function (e) {
+		e.preventDefault();
+		var urltoopen = $(this).attr('href');
+		window.open(urltoopen)
+	})
+</script>
 {% endblock %}
